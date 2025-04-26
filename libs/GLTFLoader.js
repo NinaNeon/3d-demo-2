@@ -42,7 +42,7 @@ import {
 
 //import { DRACOLoader } from '../loaders/DRACOLoader.js'; // 如果你有用DRACO，可以留，不然刪掉
 //import { MeshoptDecoder } from '../libs/meshopt_decoder.module.js'; // 如果你有用Meshopt，可以留，不然刪掉
-import { toTrianglesDrawMode } from 'utils/BufferGeometryUtils.js';
+import { toTrianglesDrawMode } from './utils/BufferGeometryUtils.js';
 
 
 class GLTFLoader extends Loader {
