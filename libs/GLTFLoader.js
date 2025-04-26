@@ -13,6 +13,7 @@ import {
 	InterleavedBufferAttribute,
 	LinearFilter,
 	LinearMipmapNearestFilter,
+	NearestMipmapLinearFilter,
 	Loader,
 	LoaderUtils,
 	Material,
