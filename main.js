@@ -1,6 +1,6 @@
-import * as THREE from 'libs/three.module.js';
-import { OrbitControls } from 'libs/OrbitControls.js';
-import { GLTFLoader } from 'libs/GLTFLoader.js';
+import * as THREE from './libs/three.module.js';
+import { OrbitControls } from './libs/OrbitControls.js';
+import { GLTFLoader } from './libs/GLTFLoader.js';
 
 // 场景
 const scene = new THREE.Scene();
