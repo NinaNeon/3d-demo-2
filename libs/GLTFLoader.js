@@ -22,6 +22,7 @@ import {
 	MeshStandardMaterial,
 	MeshPhysicalMaterial,
 	NearestFilter,
+	NearestMipmapNearestFilter,
 	Object3D,
 	OrthographicCamera,
 	PerspectiveCamera,
