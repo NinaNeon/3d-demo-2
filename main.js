@@ -2,47 +2,57 @@ import * as THREE from './libs/three.module.js';
 import { OrbitControls } from './libs/OrbitControls.js';
 import { GLTFLoader } from './libs/GLTFLoader.js';
 
-// 场景
+// 建立場景
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
+scene.background = new THREE.Color(0xffffff); // 白色背景
 
-// 相机
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+// 建立相機
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.z = 2;
 
-// 渲染器
+// 建立渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// 灯光
+// 加入燈光
 const light = new THREE.HemisphereLight(0xffffff, 0x444444);
 light.position.set(0, 1, 0);
 scene.add(light);
 
-// 画一个简单的球体
-const geometry = new THREE.SphereGeometry(1, 32, 32);
-const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-const sphere = new THREE.Mesh(geometry, material);
-scene.add(sphere);
+// 載入 GLB 模型
+const loader = new GLTFLoader();
+let model;
 
-// 控制器
+loader.load('Duck.glb', (gltf) => {
+  model = gltf.scene;
+  scene.add(model);
+}, undefined, (error) => {
+  console.error(error);
+});
+
+// 加入控制器
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
-// 响应式
+// 視窗尺寸變動時更新相機跟渲染器
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// 动画
+// 動畫循環
 function animate() {
   requestAnimationFrame(animate);
-  sphere.rotation.y += 0.01;
+
+  if (model) {
+    model.rotation.y += 0.005; // 自動慢慢旋轉
+  }
+
   controls.update();
   renderer.render(scene, camera);
 }
+
 animate();
