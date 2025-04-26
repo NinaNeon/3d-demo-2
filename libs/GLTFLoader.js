@@ -13,6 +13,7 @@ import {
 	ImageBitmapLoader,
 	InterleavedBuffer,
 	InterleavedBufferAttribute,
+	InterpolateLinear,
 	InstancedBufferAttribute,
 	InstancedMesh,
 	Line,
