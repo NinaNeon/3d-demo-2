@@ -15,7 +15,6 @@ import {
 	LinearMipmapNearestFilter,
 	NearestMipmapLinearFilter,
 	LinearMipmapLinearFilter,
-	NearestMipmapNearestFilter,
 	Loader,
 	LoaderUtils,
 	Material,
