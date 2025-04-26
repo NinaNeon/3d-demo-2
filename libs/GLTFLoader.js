@@ -1,5 +1,7 @@
 import {
 	AnimationClip,
+	Bone,
+	Box3,
 	BufferAttribute,
 	BufferGeometry,
 	ClampToEdgeWrapping,
@@ -11,11 +13,14 @@ import {
 	ImageBitmapLoader,
 	InterleavedBuffer,
 	InterleavedBufferAttribute,
+	InstancedBufferAttribute,
+	InstancedMesh,
+	Line,
+	LineBasicMaterial,
+	LineSegments,
 	LinearFilter,
-	LinearMipmapNearestFilter,
-	NearestMipmapLinearFilter,
 	LinearMipmapLinearFilter,
-	MirroredRepeatWrapping,
+	LinearMipmapNearestFilter,
 	Loader,
 	LoaderUtils,
 	Material,
@@ -27,24 +32,30 @@ import {
 	MeshPhysicalMaterial,
 	NearestFilter,
 	NearestMipmapNearestFilter,
+	NearestMipmapLinearFilter,
+	MirroredRepeatWrapping,
+	RepeatWrapping,
 	Object3D,
 	OrthographicCamera,
 	PerspectiveCamera,
 	PointLight,
+	Points,
+	PointsMaterial,
+	Quaternion,
 	Skeleton,
 	SkinnedMesh,
+	Sphere,
 	SpotLight,
 	SRGBColorSpace,
+	Texture,
 	TextureLoader,
 	TriangleFanDrawMode,
+	TriangleStripDrawMode,
 	Vector2,
 	Vector3,
-	Quaternion,
-	Box3,
-	Sphere,
 	Interpolant
-} from './three.module.js';
-
+  } from './three.module.js';
+  
 import { toTrianglesDrawMode } from './utils/BufferGeometryUtils.js';
 
 
