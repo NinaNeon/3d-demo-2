@@ -31,7 +31,8 @@ import {
 	TextureLoader,
 	TriangleFanDrawMode,
 	Vector2,
-	Vector3
+	Vector3,
+	Interpolant
 } from './three.module.js';
 
 //import { DRACOLoader } from '../loaders/DRACOLoader.js'; // 如果你有用DRACO，可以留，不然刪掉
