@@ -9,7 +9,7 @@ scene.background = new THREE.Color(0xffffff); // 白色背景
 
 // 建立相機
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 7;
+camera.position.z = 8.5;
 
 // 建立渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
