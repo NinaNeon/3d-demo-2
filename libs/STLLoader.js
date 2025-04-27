@@ -4,7 +4,7 @@ import {
 	Loader,
 	LoaderUtils,
 	Vector3
-} from '../three.module.js';
+} from './three.module.js';
 
 class STLLoader extends Loader {
 
