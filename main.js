@@ -34,6 +34,8 @@ loader.load('DFN5X6.stl', (geometry) => {   // ✅ 請確認這邊檔名寫對�
   });
   model = new THREE.Mesh(geometry, material);
   model.scale.set(10, 10, 10); // ✅ 把模型放大10倍，避免太小看不到
+  model.position.set(0, 0, 0); // ✅ 把模型放到正中央
+  model.rotation.x = -Math.PI / 2; // ✅ 把模型繞X軸轉90度
   scene.add(model);
 }, undefined, (error) => {
   console.error('❌ 載入 STL失敗', error);
