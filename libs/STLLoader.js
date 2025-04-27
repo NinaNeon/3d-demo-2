@@ -21,32 +21,32 @@ class STLLoader extends Loader {
 		loader.setPath( scope.path );
 		loader.setRequestHeader( scope.requestHeader );
 		loader.setWithCredentials( scope.withCredentials );
-		loader.setResponseType( 'arraybuffer' );  // ✅ 這行很重要：讓FileLoader回傳ArrayBuffer
+		loader.setResponseType( 'arraybuffer' );
 
 		loader.load( url, function ( data ) {
-			onLoad( scope.parse( data ) );
+			if (typeof data === 'string' || (typeof data === 'object' && data instanceof String)) {
+				// 如果伺服器回傳的是字串 (ASCII STL)
+				onLoad( scope.parseASCII( data ) );
+			} else {
+				// 二進位 STL
+				onLoad( scope.parse( data ) );
+			}
 		}, onProgress, onError );
 
 	}
 
 	parse( data ) {
-
 		const isBinary = this.isBinary( data );
-
 		return isBinary ? this.parseBinary( data ) : this.parseASCII( this.ensureString( data ) );
-
 	}
 
 	isBinary( data ) {
-
 		const reader = new DataView( data, 0, Math.min( data.byteLength, 80 ) );
-
 		for ( let i = 0; i < 80; i ++ ) {
 			if ( reader.getUint8( i ) > 127 ) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -58,18 +58,15 @@ class STLLoader extends Loader {
 	}
 
 	parseBinary( data ) {
-
 		const reader = new DataView( data );
 		const faces = reader.getUint32( 80, true );
 
 		const geometry = new BufferGeometry();
-
 		const vertices = [];
 		const normals = [];
 
 		let offset = 84;
 		for ( let face = 0; face < faces; face ++ ) {
-
 			const normalX = reader.getFloat32( offset, true );
 			const normalY = reader.getFloat32( offset + 4, true );
 			const normalZ = reader.getFloat32( offset + 8, true );
@@ -84,7 +81,7 @@ class STLLoader extends Loader {
 				normals.push( normalX, normalY, normalZ );
 			}
 
-			offset += 50; // 12*4*4 bytes + 2 bytes attribute
+			offset += 50; // 12*4 + 2 bytes
 		}
 
 		geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
@@ -94,17 +91,13 @@ class STLLoader extends Loader {
 	}
 
 	parseASCII( data ) {
-
 		const geometry = new BufferGeometry();
 		const patternFace = /facet([\s\S]*?)endfacet/g;
-
 		const vertices = [];
 		const normals = [];
-
 		let result;
 
 		while ( ( result = patternFace.exec( data ) ) !== null ) {
-
 			const resultText = result[ 0 ];
 			const normal = this.parseNormal( resultText );
 			const verticesData = this.parseVertices( resultText );
@@ -113,7 +106,6 @@ class STLLoader extends Loader {
 				normals.push( normal.x, normal.y, normal.z );
 				vertices.push( verticesData[ i ].x, verticesData[ i ].y, verticesData[ i ].z );
 			}
-
 		}
 
 		geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
@@ -123,10 +115,8 @@ class STLLoader extends Loader {
 	}
 
 	parseNormal( data ) {
-
 		const patternNormal = /normal\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)/g;
 		const result = patternNormal.exec( data );
-
 		if ( result !== null ) {
 			return new Vector3(
 				parseFloat( result[ 1 ] ),
@@ -134,16 +124,13 @@ class STLLoader extends Loader {
 				parseFloat( result[ 3 ] )
 			);
 		}
-
 		return new Vector3( 0, 0, 0 );
 	}
 
 	parseVertices( data ) {
-
 		const patternVertex = /vertex\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)/g;
 		const vertices = [];
 		let result;
-
 		while ( ( result = patternVertex.exec( data ) ) !== null ) {
 			vertices.push( new Vector3(
 				parseFloat( result[ 1 ] ),
@@ -151,7 +138,6 @@ class STLLoader extends Loader {
 				parseFloat( result[ 3 ] )
 			) );
 		}
-
 		return vertices;
 	}
 
