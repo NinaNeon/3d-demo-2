@@ -8,8 +8,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff); // 白色背景
 
 // 建立相機
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 8.5;
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 8.5; // ✅ 拉遠一點
 
 // 建立渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -24,38 +24,37 @@ scene.add(light);
 // 載入 GLB 模型
 const loader = new GLTFLoader();
 let model;
-let mixer; // ✅ Mixer控制動畫
+let mixer;
 
 loader.load('DFN5X6.glb', (gltf) => {
   model = gltf.scene;
   scene.add(model);
 
-  // ✅ 遍歷每個子Mesh，根據名字自動上色
+  // ✅ 遍歷每個子Mesh
   model.traverse((child) => {
     if (child.isMesh) {
-      console.log('找到子物件:', child.name);
+      console.log('🔵 子物件:', child.name);
+      console.log('🔵 幾何資訊 geometry:', child.geometry);
+      console.log('🔵 材質資訊 material:', child.material);
+
+      const bbox = new THREE.Box3().setFromObject(child);
+      console.log('🔵 Bounding Box大小:', bbox.getSize(new THREE.Vector3()));
 
       const name = child.name.toLowerCase();
 
+      // ✅ 只改 color，不重設 material
       if (name.includes('node1') || name.includes('main') || name.includes('top')) {
-        child.material = new THREE.MeshStandardMaterial({
-          color: 0x111111,    // 本體黑色
-          metalness: 0.5,
-          roughness: 0.8,
-        });
+        if (child.material && child.material.color) {
+          child.material.color.set(0x111111); // 本體深黑色
+        }
       } else if (name.includes('node2') || name.includes('foot') || name.includes('lead')) {
-        child.material = new THREE.MeshStandardMaterial({
-          color: 0xcccccc,    // 腳銀白色
-          metalness: 1.0,
-          roughness: 0.2,
-        });
+        if (child.material && child.material.color) {
+          child.material.color.set(0xcccccc); // 腳銀白色
+        }
       } else {
-        // 其他沒分類到的，用中性灰色
-        child.material = new THREE.MeshStandardMaterial({
-          color: 0x888888,
-          metalness: 0.3,
-          roughness: 0.7,
-        });
+        if (child.material && child.material.color) {
+          child.material.color.set(0x888888); // 其他中性灰
+        }
       }
     }
   });
@@ -88,9 +87,9 @@ window.addEventListener('resize', () => {
 function animate() {
   requestAnimationFrame(animate);
 
-  const delta = clock.getDelta(); // ✅ 計算每幀時間差
+  const delta = clock.getDelta();
   if (mixer) {
-    mixer.update(delta); // ✅ 更新動畫
+    mixer.update(delta);
   }
 
   if (model) {
