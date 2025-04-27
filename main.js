@@ -37,13 +37,13 @@ loader.load('DFN5X6.glb', (gltf) => {
 
       const name = child.name.toLowerCase();
 
-      if (name.includes('Node1') || name.includes('main') || name.includes('top')) {
+      if (name.includes('node1') || name.includes('main') || name.includes('top')) {
         child.material = new THREE.MeshStandardMaterial({
           color: 0x111111,    // 本體黑色
           metalness: 0.5,
           roughness: 0.8,
         });
-      } else if (name.includes('Node2') || name.includes('foot') || name.includes('lead')) {
+      } else if (name.includes('node2') || name.includes('foot') || name.includes('lead')) {
         child.material = new THREE.MeshStandardMaterial({
           color: 0xcccccc,    // 腳銀白色
           metalness: 1.0,
