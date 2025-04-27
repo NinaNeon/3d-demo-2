@@ -5,7 +5,7 @@ import {
 	LoaderUtils,
 	Vector3,
 	Float32BufferAttribute
-} from '../three.module.js';
+} from './three.module.js';
 
 class STLLoader extends Loader {
 
