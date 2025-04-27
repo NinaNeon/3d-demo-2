@@ -13,15 +13,15 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 20; // 相機往後拉！
+camera.position.z = 200;  // 🔥 相機拉超遠，保證看得到！
 
 // 建立渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// 加入光源（雖然這版用BasicMaterial不需要，但保險加）
-const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+// 加一個超亮的環境光
+const ambientLight = new THREE.AmbientLight(0xffffff, 2);
 scene.add(ambientLight);
 
 // 控制器
@@ -38,12 +38,13 @@ loader.load('DFN5X6.stl', (geometry) => {
   console.log('🔵 geometry內容:', geometry);
 
   const material = new THREE.MeshBasicMaterial({
-    color: 0xaaaaaa,
-    wireframe: false,
+    color: 0x555555,
+    wireframe: false
   });
 
   model = new THREE.Mesh(geometry, material);
-  model.scale.set(2, 2, 2);
+
+  model.scale.set(100, 100, 100); // 🔥 放大100倍
   model.position.set(0, 0, 0);
   model.rotation.x = -Math.PI / 2;
 
