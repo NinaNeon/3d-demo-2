@@ -11,20 +11,20 @@ const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
-  1000
+  5000
 );
-camera.position.z = 200;  // 🔥 相機拉超遠，保證看得到！
+camera.position.z = 2000;  // 🔥 相機超後退
 
 // 建立渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// 加一個超亮的環境光
+// 加一個強力環境光
 const ambientLight = new THREE.AmbientLight(0xffffff, 2);
 scene.add(ambientLight);
 
-// 控制器
+// 加入控制器
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
@@ -38,13 +38,13 @@ loader.load('DFN5X6.stl', (geometry) => {
   console.log('🔵 geometry內容:', geometry);
 
   const material = new THREE.MeshBasicMaterial({
-    color: 0x555555,
-    wireframe: false
+    color: 0x000000,   // 黑色
+    wireframe: true    // 🔥 線框模式（一定看得到）
   });
 
   model = new THREE.Mesh(geometry, material);
 
-  model.scale.set(100, 100, 100); // 🔥 放大100倍
+  model.scale.set(1000, 1000, 1000);  // 🔥 爆炸放大
   model.position.set(0, 0, 0);
   model.rotation.x = -Math.PI / 2;
 
@@ -55,7 +55,7 @@ loader.load('DFN5X6.stl', (geometry) => {
   console.error('❌ 載入 STL失敗', error);
 });
 
-// 視窗尺寸變動時更新
+// 當視窗大小改變時更新相機和渲染器尺寸
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -67,7 +67,7 @@ function animate() {
   requestAnimationFrame(animate);
 
   if (model) {
-    model.rotation.y += 0.005; // 自轉
+    model.rotation.y += 0.005; // 自動慢慢旋轉
   }
 
   controls.update();
