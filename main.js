@@ -1,7 +1,6 @@
 import * as THREE from './libs/three.module.js';
 import { OrbitControls } from './libs/OrbitControls.js';
-import { GLTFLoader } from './libs/GLTFLoader.js';
-import { AnimationMixer } from './libs/three.module.js'; // ✅ 加這個！
+import { STLLoader } from './libs/STLLoader.js'; // ✅ 改成載入 STLLoader
 
 // 建立場景
 const scene = new THREE.Scene();
@@ -21,20 +20,18 @@ const light = new THREE.HemisphereLight(0xffffff, 0x444444);
 light.position.set(0, 1, 0);
 scene.add(light);
 
-// 載入 GLB 模型
-const loader = new GLTFLoader();
+// 載入 STL 模型
+const loader = new STLLoader();
 let model;
-let mixer; // ✅ Mixer控制動畫
 
-loader.load('Duck.glb', (gltf) => {
-  model = gltf.scene;
+loader.load('DFN5X6.stl', (geometry) => {  // ✅ 注意: 換成你的 STL 檔名
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x555555,  // ✅ 半導體產品常用的深灰色
+    metalness: 0.8,
+    roughness: 0.2
+  });
+  model = new THREE.Mesh(geometry, material);
   scene.add(model);
-
-  if (gltf.animations && gltf.animations.length > 0) {
-    mixer = new AnimationMixer(model);
-    const action = mixer.clipAction(gltf.animations[0]);
-    action.play();
-  }
 }, undefined, (error) => {
   console.error(error);
 });
@@ -44,7 +41,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
-// 加一個Clock來推進動畫
+// 加一個Clock來推進動畫（雖然這次不需要mixer了，但Clock可以保留）
 const clock = new THREE.Clock();
 
 // 視窗尺寸變動時更新相機跟渲染器
@@ -58,10 +55,8 @@ window.addEventListener('resize', () => {
 function animate() {
   requestAnimationFrame(animate);
 
-  const delta = clock.getDelta(); // ✅ 計算每幀時間差
-  if (mixer) {
-    mixer.update(delta); // ✅ 更新動畫
-  }
+  const delta = clock.getDelta(); // ✅ 這裡保留，雖然沒mixer但controls會用
+  // 這次不需要 mixer.update(delta) 了
 
   if (model) {
     model.rotation.y += 0.005; // 自動慢慢旋轉
