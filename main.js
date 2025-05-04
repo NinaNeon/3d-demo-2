@@ -61,13 +61,15 @@ loader.load('DFN5X6.glb', (gltf) => {
   const size = bbox.getSize(new THREE.Vector3());
   const center = bbox.getCenter(new THREE.Vector3());
 
-  const maxDim = Math.max(size.x, size.y, size.z);
-  let scaleFactor = window.innerWidth < 600 ? 5 : 10; // 手機小一點、桌機大一點
+  // ✅ 微調縮放倍數：桌機原本是 10，改為 7；手機仍為 5
+  const scaleFactor = window.innerWidth < 600 ? 5 : 7;
   model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
+  // ✅ 微調相機距離：乘上 1.5（原本是 1.2，拉遠一點）
+  const maxDim = Math.max(size.x, size.y, size.z);
   const fov = camera.fov * (Math.PI / 180);
   let cameraZ = (maxDim * scaleFactor) / (2 * Math.tan(fov / 2));
-  cameraZ *= 1.2;
+  cameraZ *= 3; // ⬅️ 拉遠一點
 
   camera.position.set(center.x, center.y, cameraZ);
   camera.lookAt(center);
