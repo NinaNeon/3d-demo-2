@@ -28,6 +28,7 @@ let mixer;
 
 loader.load('DFN5X6.glb', (gltf) => {
   model = gltf.scene;
+  model.scale.set(5, 5, 5);
   scene.add(model);
 
   // ✅ 遍歷每個子Mesh
