@@ -62,7 +62,7 @@ loader.load('DFN5X6.glb', (gltf) => {
   const center = bbox.getCenter(new THREE.Vector3());
 
   // ✅ 微調縮放倍數：桌機原本是 10，改為 7；手機仍為 5
-  const scaleFactor = window.innerWidth < 600 ? 5 : 5;
+  const scaleFactor = window.innerWidth < 600 ? 5 : 6;
   model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
   // ✅ 微調相機距離：乘上 1.5（原本是 1.2，拉遠一點）
